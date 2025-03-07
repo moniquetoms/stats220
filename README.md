@@ -18,3 +18,6 @@ https://www.auckland.ac.nz/en/on-campus/life-on-campus/clubs-societies.html
 ## Favourite Memes:
 
 A meme that captures how I currently feel about my university studies is ![](https://media1.tenor.com/m/eBByy4ihCocAAAAd/angry-fist.gif)
+
+A meme that captures how the first week of university was ![](https://media1.tenor.com/m/JG2OwJZFIKcAAAAC/yes-happy.gif)
+
