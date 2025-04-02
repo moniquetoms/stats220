@@ -1,0 +1,126 @@
+---
+title: Analysis of Instagram Engagement
+output: html_fragment
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+
+```
+
+```{css}
+body {
+  background-color: #ffccf8;
+}
+
+h1 {
+  color: #b5c9ff;
+}
+
+h2 {
+  color: #900C3F;
+}
+
+h3 {
+  color: #000000;
+}
+
+```
+## Instagram Engagement:
+The purpose of my report was to determine what increases Instagram engagement. To do this, I had conducted a survey asking various questions involving what content they engage with and for how long. 
+
+
+## Instagram Engagement Data:
+After receiving responses from my survey, I focused on two questions, "How long (in minutes) do you scroll on your Instagram feed (not including Reels?)" and "How much time (in minutes) do you spend watching Instagram Reels?". To compare these questions, I had created two bar graphs to identify what respondents engaged with more; Instagram Reels or their Instagram feed. 
+
+
+## Analysis of Instagram Engagement Data:
+Analysing the bar graphs had shown a significant trend from my respondents which was they spend more time on Instagram Reels compared to scrolling on their Instagram feed. 
+
+The minimum scroll time for both of the bar graphs did not give me information as some people either didn't have Instagram or they did not watch Instagram Reels. 
+
+The maximum scroll time had a significant range difference between the two bar graphs. For the amount of time spent scrolling on Instagram feed in minutes, it ranged between 0 minutes and around 80 minutes. Whereas for the amount of time spent scrolling on Instagram reels in minutes, ranged between 0 minutes and roughly 225 minutes. 
+
+The mean scroll time for each of the bar graphs had indicated that the mean scroll time for Instagram Reels was signifcantly higher at roughly 50 minutes, than the mean scroll time for Instagram feed which was at just below 25 minutes. 
+
+## Conclusion
+Before Instagram Reels, it was very common to scroll on Instagram feed for a significant amount of time to view posts by peers, celebrities etc. Recently, there has been a significant decline of engagement on Instagram. There could be numerous reasons for this such as other social media platforms rising, an example, TikTok. However, since Instagram created Reels, which is a similar concept to TikTok, there seems to be significant engagement especially since the ban of TikTok in the United States of America. To analyse this claim, I had conducted a survey which provided me with data indicating that Instagram Reels had a significant amount of engagement compared to Instagram feed. 
+
+
+
+```{r}
+library(tidyverse)
+
+# Loading my data to R studio in order for R to read my data
+read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSaZO72pNHmUpCevLSW20jjkmed8NwZYalUaqymyfNg5uyqmI9XYdO520Jw2E_6a0iM_5F3eVXCvnI5/pub?output=csv")
+
+logged_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSaZO72pNHmUpCevLSW20jjkmed8NwZYalUaqymyfNg5uyqmI9XYdO520Jw2E_6a0iM_5F3eVXCvnI5/pub?output=csv") 
+
+# Renaming my columns to numbers to make my code easier to read. Naming my new data as "latest_data".
+latest_data <- logged_data %>%
+  rename("Do you watch Instagram Reels?" = 2,
+         "How long (in minutes) do you scroll on your Instagram feed (not including Reels?)" = 3,
+         "How often do you post on Instagram so that you have increased engagement?" = 4,
+         "How much time (in minutes) do you spend watching Instagram Reels?"= 5,
+         "What type of content do you like seeing on Instagram?" = 6,
+         "Are you more likely to either like, comment or share an Instagram post if a giveaway is involved?" = 7,
+         "Do you engage with Instagram stories if there is a poll or a question?" = 8,
+         "How likely are you to engage with a post if it is aesthetically pleasing?" = 9,
+         "How likely are you to engage with a post if it is authentic?" = 10)
+
+# Summary of scroll time on Instagram feed
+scroll_time_summary <- latest_data %>%
+  summarise(
+    min_scroll_time = min(latest_data[[3]], na.rm = TRUE),
+    max_scroll_time = max(latest_data[[3]], na.rm = TRUE),
+    mean_scroll_time = mean(latest_data[[3]], na.rm = TRUE)
+  )
+print(scroll_time_summary)
+
+# Summary of time spent on Reels
+reels_time_summary <- latest_data %>%
+  summarise(
+    min_reels_time = min(latest_data[[5]], na.rm = TRUE),
+    max_reels_time = max(latest_data[[5]], na.rm = TRUE),
+    mean_reels_time = mean(latest_data[[5]], na.rm = TRUE)
+  )
+print(reels_time_summary)
+
+# Bar chart for scrolling time on Instagram feed 
+scroll_data <- data.frame(
+  Category = c("Minimum Scroll Time", "Maximum Scroll Time", "Mean Scroll Time"),
+  Time = c(scroll_time_summary$min_scroll_time, scroll_time_summary$max_scroll_time, scroll_time_summary$mean_scroll_time)
+)
+
+ggplot(scroll_data, aes(x = Category, y = Time, fill = Category)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Summary of scrolling time on Instagram feed", x = "Range", y = "Time (minutes)") +
+  scale_fill_manual(values = c("#FFB6C1", "#CBC3E3", "#800000"))
+
+# Bar chart for scrolling time on Reels
+reels_data <- data.frame(
+  Category = c("Min Reels Time", "Max Reels Time", "Mean Reels Time"),
+  Time = c(reels_time_summary$min_reels_time, reels_time_summary$max_reels_time, reels_time_summary$mean_reels_time)
+)
+
+ggplot(reels_data, aes(x = Category, y = Time, fill = Category)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Summary of scrolling time on Instagram Reels", x = "Range", y = "Time (minutes)") +
+  scale_fill_manual(values = c("#FFB6C1", "#CBC3E3", "#800000"))
+
+# First step I took was uploading my data to R studio
+# Second step was to name this data on R studio to "logged_data"
+# Third step was to rename my variables to their column numbers to make my code easier to read. I then renamed this to "latest_data".
+# Fourth step was to summarize the data I collected from "How long (in minutes) do you scroll on your Instagram feed (not including Reels?)" and  "How much time (in minutes) do you spend watching Instagram Reels?".
+# Fifth step was to use this summary data and put them into bar graphs
+
+
+```
+
+
+
+![](https://media1.tenor.com/m/ULaaFN6RH98AAAAC/social-media-social-media-addict.gif)
